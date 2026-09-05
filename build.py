@@ -270,8 +270,8 @@ SIGNUP_JS = '''
 '''
 
 HOME_TITLE = "Alora C. Kane | Alpha King and Werewolf Romance"
-HOME_DESC = ("Alpha king and werewolf romance by Alora C. Kane. Free visual audiobooks on YouTube, "
-             "coloring books, and the spicier full length versions.")
+HOME_DESC = ("Alpha king and werewolf romance by Alora C. Kane. Free visual audiobooks on YouTube. "
+             "Coloring books and the longer, spicier novels on Amazon.")
 
 def build_home():
     ld = [
@@ -339,8 +339,8 @@ SHELF_COPY = {
  "book": ("Books",
           "The longer versions, where rather more happens.",
           "The first book is being written now.",
-          "Alpha king and werewolf romance books by Alora C. Kane: the longer, spicier versions "
-          "of the free Midnight Crown stories, on Amazon."),
+          "Alpha king and werewolf romance novels by Alora C. Kane on Amazon: the longer, "
+          "spicier versions of the free YouTube stories."),
 }
 
 def build_shelf(filename, kind):
