@@ -9,11 +9,11 @@ CSSV = 2
 # While False every page carries a noindex tag and robots.txt blocks crawlers,
 # so the github.io preview address never gets into Google, and the "do not
 # publish" draft note stays visible on the newsletter panel.
-PUBLISHED = False
+PUBLISHED = True
 
 YOUTUBE = "https://www.youtube.com/@MidnightCrownStories"
 SOCIAL_CARD = "assets/social-card.jpg"   # 1200x630, built from the crown avatar
-BUILT = "2026-09-05"                     # sitemap lastmod; bump when content changes
+BUILT = "2026-09-30"                     # sitemap lastmod; bump when content changes
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -39,9 +39,10 @@ STORIES = [
                  "Then she tells the alpha king to move.",
         "art_alt": "A masked couple in a candlelit ballroom",
         "thumb_alt": "The Masked Festival thumbnail",
-        "video": {"title": "He Went to a Masked Ball to Escape", "url": None, "status": "Publishing soon"},
-        "book": {"url": None, "status": "Being written now", "cover": None},
-        "coloring": {"url": None, "status": "In the works", "cover": None},
+        "video": {"title": "She Told Him to Move", "url": "https://youtu.be/tjFr5KzEjAc", "status": "Live"},
+        "book": {"url": None, "status": "Coming soon", "cover": None},
+        "coloring": {"url": None, "status": "Coming soon to Amazon", "cover": "masked-festival-coloring.jpg",
+                     "title": "The Masked Festival"},
     },
     {
         "slug": "scentless-omega",
@@ -52,9 +53,10 @@ STORIES = [
                  "morning. The alpha king has other plans.",
         "art_alt": "A crowned alpha king and a dark haired woman face to face by candlelight",
         "thumb_alt": "The Scentless Omega thumbnail",
-        "video": {"title": "She Rode Into the Alpha King's Court With No Scent", "url": None, "status": "Publishing soon"},
+        "video": {"title": "He Found the Scentless Omega", "url": None, "status": "Coming soon"},
         "book": {"url": None, "status": "Planned", "cover": None},
-        "coloring": {"url": None, "status": "Planned", "cover": None},
+        "coloring": {"url": None, "status": "Coming soon to Amazon", "cover": "scentless-mate-coloring.jpg",
+                     "title": "The Scentless Mate"},
     },
 ]
 
@@ -124,7 +126,6 @@ def head(title, desc, canonical, ld=None):
     <a class="wordmark" href="index.html">Alora C. Kane</a>
     <nav>
       <a href="index.html#stories">Stories</a>
-      <a href="index.html#newsletter">Freebies</a>
       <a href="index.html#about">About</a>
       <a href="index.html#newsletter" class="nav-cta">Newsletter</a>
     </nav>
@@ -138,7 +139,7 @@ FOOTER = '''
 
   <footer class="site-footer">
     <p class="footer-name">Alora C. Kane</p>
-    <p>Contact: <a href="mailto:alora@alorakanebooks.com">alora@alorakanebooks.com</a></p>
+    <p>Contact: <a href="mailto:alora@alorakanebooks.com">alora@alorakanebooks.com</a> &middot; <a href="privacy.html">Privacy</a></p>
     <p class="copyright">&copy; 2026 Alora C. Kane. All rights reserved.</p>
   </footer>
 
@@ -203,22 +204,22 @@ def story_card(s):
           </div>
         </article>'''
 
-STUB = ('' if PUBLISHED else '        <p class="stub-note">Draft note: the form is live and wired to MailerLite. The coloring pages PDF does not exist yet, so do not publish this page.</p>')
+STUB = ''
 
 NEWSLETTER = f'''
     <section id="newsletter" class="newsletter smoke">
       <div class="newsletter-panel">
-        <h2>Free coloring pages</h2>
-        <p class="offer">Join the list and I will send you a set of <strong>printable coloring pages</strong> from the Midnight Crown stories. These pages are not in the coloring books. They are only here.</p>
+        <h2>Join the newsletter</h2>
+        <p class="offer">Be the first to know when a new story, coloring book, or novel goes live.</p>
         <ul class="offer-list">
           <li>New stories the day they go live</li>
-          <li>The books behind the stories</li>
-          <li>The occasional freebie, like this one</li>
+          <li>The books and coloring books behind the stories</li>
+          <li>The occasional freebie</li>
         </ul>
 {STUB}
         <form class="signup" id="signup-form">
           <input type="email" id="ml-email" placeholder="your@email.com" aria-label="Email address" required>
-          <button type="submit" class="button gold">Send my pages</button>
+          <button type="submit" class="button gold">Join the list</button>
         </form>
         <p class="signup-status" id="ml-status" hidden></p>
         <p class="fine-print">Your privacy matters. Your email address will only be used to send you updates, story news, and the occasional freebie from me. I use a trusted email service to manage this securely. I will never sell or share your information, and you can unsubscribe at any time.</p>
@@ -257,7 +258,7 @@ SIGNUP_JS = '''
           var data = await res.json();
           if (data.success) {
             f.hidden = true;
-            status.textContent = 'Almost there. Check your inbox for a confirmation email, then your coloring pages are on their way.';
+            status.textContent = 'Almost there. Check your inbox for a confirmation email and click the button inside.';
           } else {
             status.textContent = 'That did not go through. Check the address and try again.';
           }
@@ -304,23 +305,25 @@ def build_home():
 
 def tile(s, kind):
     d = s[kind]
+    name = s["name"]
     if kind == "video":
         img = f'<img src="assets/thumbs/{s["slug"]}.jpg" alt="{s["thumb_alt"]}">'
         shape, line = "wide", d["title"]
         cta, href = "Watch on YouTube", d["url"]
     else:
         cover = d.get("cover")
-        img = (f'<img src="assets/covers/{cover}" alt="Cover of {s["name"]}">' if cover
+        img = (f'<img src="assets/covers/{cover}" alt="Cover of {d.get("title", s["name"])}">' if cover
                else f'<span>{s["name"]}</span>')
         shape = "tall"
         line = "Coloring book" if kind == "coloring" else "The longer version"
+        name = d.get("title", s["name"])
         cta, href = "Buy on Amazon", d["url"]
     empty = "" if (kind == "video" or d.get("cover")) else " empty"
     body = (f'<a class="button gold" href="{href}" target="_blank" rel="noopener">{cta}</a>'
             if href else f'<p class="p-status">{d["status"]}</p>')
     return f'''        <article class="product">
           <div class="p-cover {shape}{empty}">{img}</div>
-          <h3>{s["name"]}</h3>
+          <h3>{name}</h3>
           <p class="p-line">{line}</p>
           {body}
         </article>'''
@@ -332,7 +335,7 @@ SHELF_COPY = {
            "Free visual audiobooks by Alora C. Kane on YouTube: alpha king and werewolf romance, "
            "illustrated and narrated, most over an hour long."),
  "coloring": ("Coloring books",
-              "Printable coloring books drawn from the stories, on Amazon.",
+              "Story coloring books drawn from the stories, on Amazon. Every picture has a caption, so the romance unfolds as you color.",
               "The first coloring book is being drawn now.",
               "Printable alpha king and werewolf romance coloring books by Alora C. Kane, drawn "
               "from the Midnight Crown stories, on Amazon."),
@@ -371,7 +374,7 @@ def build_shelf(filename, kind):
         h += f'''      <div class="shelf-empty">
         <p>{nothing}</p>
         <p class="shelf-empty-hint">Join the list and I will tell you the day it lands.</p>
-        <a class="button gold" href="index.html#newsletter">Get the free coloring pages</a>
+        <a class="button gold" href="index.html#newsletter">Join the newsletter</a>
       </div>
 '''
     h += '    </section>\n'
@@ -392,9 +395,34 @@ def build_404():
 '''
     return h + FOOTER
 
+PRIVACY = """
+    <section class="page-hero smoke">
+      <h1>Privacy</h1>
+      <p class="tagline">Short and plain, because there is not much to say.</p>
+    </section>
+
+    <section class="about">
+      <div class="about-inner">
+        <h2>What I collect</h2>
+        <p>If you join the newsletter, I collect your email address. That is all. This site has no ads, no tracking pixels, and no analytics cookies.</p>
+        <h2>How I use it</h2>
+        <p>I use your email address only to send you story news, new releases, and the occasional freebie from me. The newsletter is sent through MailerLite, a trusted email service that stores the list securely on my behalf.</p>
+        <h2>What I never do</h2>
+        <p>I never sell, rent, or share your email address with anyone else.</p>
+        <h2>Leaving</h2>
+        <p>Every email has an unsubscribe link at the bottom. One click and you are off the list. You can also write to <a href="mailto:alora@alorakanebooks.com">alora@alorakanebooks.com</a> and ask me to delete your address, and I will.</p>
+        <p class="fine-print">Last updated 30 September 2026.</p>
+      </div>
+    </section>
+"""
+
+def build_privacy():
+    h = head("Privacy | Alora C. Kane", "How Alora C. Kane handles newsletter email addresses.", "privacy.html")
+    return h + PRIVACY + FOOTER
+
 def build_sitemap():
     rows = "".join(f"  <url><loc>{SITE}{'' if f == 'index.html' else f}</loc><lastmod>{BUILT}</lastmod></url>\n"
-                   for f, _, _ in SHELVES)
+                   for f in [f for f, _, _ in SHELVES] + ["privacy.html"])
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + '</urlset>\n')
 
@@ -406,7 +434,8 @@ def build_robots():
 def main():
     root = os.path.dirname(os.path.abspath(__file__))
     out = {"index.html": build_home(), "404.html": build_404(),
-           "sitemap.xml": build_sitemap(), "robots.txt": build_robots()}
+           "sitemap.xml": build_sitemap(), "robots.txt": build_robots(),
+           "privacy.html": build_privacy()}
     for filename, kind, _ in SHELVES[1:]:
         out[filename] = build_shelf(filename, kind)
     for name, text in out.items():
