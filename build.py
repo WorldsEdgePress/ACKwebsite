@@ -41,7 +41,7 @@ STORIES = [
         "thumb_alt": "The Masked Festival thumbnail",
         "video": {"title": "She Told Him to Move", "url": "https://youtu.be/tjFr5KzEjAc", "status": "Live"},
         "book": {"url": None, "status": "Coming soon", "cover": None},
-        "coloring": {"url": None, "status": "Coming soon to Amazon", "cover": "masked-festival-coloring.jpg",
+        "coloring": {"url": "https://www.amazon.com/dp/B0HLMT5BRQ", "status": "Live", "cover": "masked-festival-coloring.jpg",
                      "title": "The Masked Festival"},
     },
     {
