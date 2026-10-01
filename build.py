@@ -13,7 +13,7 @@ PUBLISHED = True
 
 YOUTUBE = "https://www.youtube.com/@MidnightCrownStories"
 SOCIAL_CARD = "assets/social-card.jpg"   # 1200x630, built from the crown avatar
-BUILT = "2026-09-30"                     # sitemap lastmod; bump when content changes
+BUILT = "2026-10-01"                     # sitemap lastmod; bump when content changes
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -38,10 +38,12 @@ STORIES = [
         "blurb": "Katrina goes to the masked festival to be no one for one night. "
                  "Then she tells the alpha king to move.",
         "art_alt": "A masked couple in a candlelit ballroom",
+        "art_file": "masked-ball-portrait.png",
         "thumb_alt": "The Masked Festival thumbnail",
         "video": {"title": "She Told Him to Move", "url": "https://youtu.be/tjFr5KzEjAc", "status": "Live"},
         "book": {"url": None, "status": "Coming soon", "cover": None},
         "coloring": {"url": "https://www.amazon.com/dp/B0HLMT5BRQ", "status": "Live", "cover": "masked-festival-coloring.jpg",
+                     "digital_url": "https://www.etsy.com/listing/4586570420/the-masked-festival-romantasy-coloring",
                      "title": "The Masked Festival"},
     },
     {
@@ -163,10 +165,12 @@ def img_size(rel):
     with Image.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), rel)) as im:
         return im.size
 
-def way_row(kind, label, note, url):
+def way_row(kind, label, note, url, digital_url=None):
     icon = ICONS[kind]
     if url:
         inner = f'<span class="way-label">{label}</span> <a href="{url}" target="_blank" rel="noopener">{note}</a>'
+        if digital_url:
+            inner += f' or <a href="{digital_url}" target="_blank" rel="noopener">Digital version on Etsy</a>'
         cls = "way ready"
     else:
         inner = f'<span class="way-label">{label}</span> <span class="way-note">{note}</span>'
@@ -179,7 +183,8 @@ def way_row(kind, label, note, url):
 def story_card(s):
     v, b, c = s["video"], s["book"], s["coloring"]
     lazy = "" if s is STORIES[0] else ' loading="lazy"'
-    w, h = img_size(f'assets/stories/{s["slug"]}.jpg')
+    art_file = s.get("art_file", f'{s["slug"]}.jpg')
+    w, h = img_size(f'assets/stories/{art_file}')
     rows = [
         way_row("video", "Watch it free",
                 f'as <em>{v["title"]}</em> &middot; {v["status"].lower()}' if not v["url"]
@@ -187,11 +192,11 @@ def story_card(s):
         way_row("book", "Read the longer version",
                 b["status"].lower() if not b["url"] else "on Amazon", b["url"]),
         way_row("coloring", "Color it",
-                c["status"].lower() if not c["url"] else "coloring book on Amazon", c["url"]),
+                c["status"].lower() if not c["url"] else "coloring book on Amazon", c["url"], c.get("digital_url")),
     ]
     return f'''        <article class="story-card">
           <div class="story-art">
-            <img src="assets/stories/{s["slug"]}.jpg" alt="{s["art_alt"]}" width="{w}" height="{h}"{lazy}>
+            <img src="assets/stories/{art_file}" alt="{s["art_alt"]}" width="{w}" height="{h}"{lazy}>
           </div>
           <div class="story-body">
             <p class="story-kicker">{s["kicker"]}</p>
@@ -321,6 +326,9 @@ def tile(s, kind):
     empty = "" if (kind == "video" or d.get("cover")) else " empty"
     body = (f'<a class="button gold" href="{href}" target="_blank" rel="noopener">{cta}</a>'
             if href else f'<p class="p-status">{d["status"]}</p>')
+    if kind == "coloring" and d.get("digital_url"):
+        body += (f'\n          <p class="p-line"><a class="button ghost" href="{d["digital_url"]}" '
+                 'target="_blank" rel="noopener">Digital version on Etsy</a></p>')
     return f'''        <article class="product">
           <div class="p-cover {shape}{empty}">{img}</div>
           <h3>{name}</h3>
@@ -335,10 +343,10 @@ SHELF_COPY = {
            "Free visual audiobooks by Alora C. Kane on YouTube: alpha king and werewolf romance, "
            "illustrated and narrated, most over an hour long."),
  "coloring": ("Coloring books",
-              "Story coloring books drawn from the stories, on Amazon. Every picture has a caption, so the romance unfolds as you color.",
+              "Story coloring books drawn from the stories. Every picture has a caption, so the romance unfolds as you color.",
               "The first coloring book is being drawn now.",
               "Printable alpha king and werewolf romance coloring books by Alora C. Kane, drawn "
-              "from the Midnight Crown stories, on Amazon."),
+              "from the Midnight Crown stories. Paperbacks on Amazon and digital editions on Etsy."),
  "book": ("Books",
           "The longer versions, where rather more happens.",
           "The first book is being written now.",
