@@ -3,7 +3,7 @@
 import os, base64, json
 
 SITE = "https://alorakanebooks.com/"
-CSSV = 2
+CSSV = 3
 
 # Flip to True on the day the site goes live at alorakanebooks.com and rebuild.
 # While False every page carries a noindex tag and robots.txt blocks crawlers,
@@ -167,6 +167,8 @@ def img_size(rel):
 
 def way_row(kind, label, note, url, digital_url=None):
     icon = ICONS[kind]
+    if not url and digital_url:
+        url, note, digital_url = digital_url, "Digital version on Etsy", None
     if url:
         inner = f'<span class="way-label">{label}</span> <a href="{url}" target="_blank" rel="noopener">{note}</a>'
         if digital_url:
@@ -327,8 +329,9 @@ def tile(s, kind):
     body = (f'<a class="button gold" href="{href}" target="_blank" rel="noopener">{cta}</a>'
             if href else f'<p class="p-status">{d["status"]}</p>')
     if kind == "coloring" and d.get("digital_url"):
-        body += (f'\n          <p class="p-line"><a class="button ghost" href="{d["digital_url"]}" '
-                 'target="_blank" rel="noopener">Digital version on Etsy</a></p>')
+        body = ('<div class="purchase-buttons">\n            ' + body +
+                f'\n            <a class="button etsy" href="{d["digital_url"]}" '
+                'target="_blank" rel="noopener">Digital on Etsy</a>\n          </div>')
     return f'''        <article class="product">
           <div class="p-cover {shape}{empty}">{img}</div>
           <h3>{name}</h3>
