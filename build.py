@@ -57,7 +57,7 @@ STORIES = [
         "thumb_alt": "The Scentless Omega thumbnail",
         "video": {"title": "He Found the Scentless Omega", "url": "https://youtu.be/WyUdsc8J1sw", "status": "Live"},
         "book": {"url": None, "status": "Planned", "cover": None},
-        "coloring": {"url": None, "status": "Coming soon to Amazon", "cover": "scentless-mate-coloring.jpg",
+        "coloring": {"url": "https://www.amazon.com/dp/B0HLT8RYZV", "status": "Live", "cover": "scentless-mate-coloring.jpg",
                      "digital_url": "https://www.etsy.com/listing/4586610553/romantasy-coloring-book-for-adults-the",
                      "title": "The Scentless Mate"},
     },
