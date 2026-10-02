@@ -13,7 +13,7 @@ PUBLISHED = True
 
 YOUTUBE = "https://www.youtube.com/@MidnightCrownStories"
 SOCIAL_CARD = "assets/social-card.jpg"   # 1200x630, built from the crown avatar
-BUILT = "2026-10-01"                     # sitemap lastmod; bump when content changes
+BUILT = "2026-10-02"                     # sitemap lastmod; bump when content changes
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -55,7 +55,7 @@ STORIES = [
                  "morning. The alpha king has other plans.",
         "art_alt": "A crowned alpha king and a dark haired woman face to face by candlelight",
         "thumb_alt": "The Scentless Omega thumbnail",
-        "video": {"title": "He Found the Scentless Omega", "url": None, "status": "Coming soon"},
+        "video": {"title": "He Found the Scentless Omega", "url": "https://youtu.be/WyUdsc8J1sw", "status": "Live"},
         "book": {"url": None, "status": "Planned", "cover": None},
         "coloring": {"url": None, "status": "Coming soon to Amazon", "cover": "scentless-mate-coloring.jpg",
                      "title": "The Scentless Mate"},
@@ -189,8 +189,8 @@ def story_card(s):
     w, h = img_size(f'assets/stories/{art_file}')
     rows = [
         way_row("video", "Watch it free",
-                f'as <em>{v["title"]}</em> &middot; {v["status"].lower()}' if not v["url"]
-                else f'as <em>{v["title"]}</em> on YouTube', v["url"]),
+                f'<em>{v["title"]}</em> &middot; {v["status"].lower()}' if not v["url"]
+                else f'<em>{v["title"]}</em> on YouTube', v["url"]),
         way_row("book", "Read the longer version",
                 b["status"].lower() if not b["url"] else "on Amazon", b["url"]),
         way_row("coloring", "Color it",
