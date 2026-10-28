@@ -13,7 +13,7 @@ PUBLISHED = True
 
 YOUTUBE = "https://www.youtube.com/@MidnightCrownStories"
 SOCIAL_CARD = "assets/social-card.jpg"   # 1200x630, built from the crown avatar
-BUILT = "2026-10-02"                     # sitemap lastmod; bump when content changes
+BUILT = "2026-10-28"                    # sitemap lastmod; bump when content changes
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -60,6 +60,51 @@ STORIES = [
         "coloring": {"url": "https://www.amazon.com/dp/B0HLT8RYZV", "status": "Live", "cover": "scentless-mate-coloring.jpg",
                      "digital_url": "https://www.etsy.com/listing/4586610553/romantasy-coloring-book-for-adults-the",
                      "title": "The Scentless Mate"},
+    },
+    {
+        "slug": "a-to-z",
+        "name": "The A to Z",
+        "kicker": "Story three &middot; Modern",
+        "hook": "She didn't know who she was saving. Until she saw the charm.",
+        "blurb": "Years ago, in front of everyone, Zach swore he had not found his mate. Now someone is "
+                 "poisoning the king, he is at Amanda's door asking for her help, and the pewter charm "
+                 "she gave him is still on his chest.",
+        "art_alt": "A medic kneels over an unconscious man wearing a charm, a castle behind them",
+        "thumb_alt": "The A to Z thumbnail",
+        "video": {"title": "The Dying Stranger She Saved", "url": "https://youtu.be/8X2T5HzNIz4", "status": "Live"},
+        "book": {"url": None, "status": "Planned", "cover": None},
+        "coloring": {"url": None, "status": "Planned", "cover": None},
+    },
+    {
+        "slug": "cinder",
+        "name": "Cinder",
+        "kicker": "Story four &middot; Medieval",
+        "hook": "Her stepsister told her to go back to her ashes. The king caught her instead.",
+        "blurb": "They call her Cinder, the ash girl who tends the bone fires. Her stepmother hides her "
+                 "scent with a tonic, and the Alpha King is the one wolf who can smell the lie. "
+                 "A Cinderella story, with wolves.",
+        "art_alt": "A crowned king carries a blonde woman in a blue ball gown through a candlelit ballroom",
+        "thumb_alt": "Her Stepmother Hid Her Scent thumbnail",
+        "video": {"title": "Her Stepmother Hid Her Scent", "url": "https://youtu.be/RLSa9n4NTHg", "status": "Live"},
+        "book": {"url": None, "status": "Planned", "cover": None},
+        "coloring": {"url": "https://www.amazon.com/dp/B0HPLDWX5Q", "status": "Live", "cover": "hidden-mate-coloring.jpg",
+                     "digital_url": "https://www.etsy.com/listing/4604394652/cinderella-romantasy-coloring-book-for",
+                     "title": "The Alpha King&rsquo;s Hidden Mate"},
+    },
+    {
+        "slug": "ransomed",
+        "name": "Ransomed",
+        "kicker": "Story five &middot; Medieval",
+        "hook": "Five years on a prison island. One chain, one cave, and a king who never paid her ransom.",
+        "blurb": "When the crown chose which prisoners to buy back, Shelby's name was not on the list. "
+                 "Now the king who left her is standing on her beach with his hand held out. "
+                 "She is not grateful. She is furious.",
+        "art_alt": "A woman in chains on a stormy island shore",
+        "thumb_alt": "He Left Her Chained on a Prison Island thumbnail",
+        "video": {"title": "He Left Her Chained on a Prison Island", "url": "https://youtu.be/_rgFtv3YwpI",
+                  "url2": "https://youtu.be/fnOx3grqdHY", "status": "Live"},
+        "book": {"url": None, "status": "Planned", "cover": None},
+        "coloring": {"url": None, "status": "Planned", "cover": None},
     },
 ]
 
@@ -188,10 +233,21 @@ def story_card(s):
     lazy = "" if s is STORIES[0] else ' loading="lazy"'
     art_file = s.get("art_file", f'{s["slug"]}.jpg')
     w, h = img_size(f'assets/stories/{art_file}')
-    rows = [
-        way_row("video", "Watch it free",
+    if v.get("url2"):
+        # a story told in two parts: one row, a link to each part
+        video_row = (f'              <li class="way ready">\n'
+                     f'                {ICONS["video"]}\n'
+                     f'                <span><span class="way-label">Watch it free</span> '
+                     f'<em>{v["title"]}</em> on YouTube, in two parts: '
+                     f'<a href="{v["url"]}" target="_blank" rel="noopener">Part 1</a> and '
+                     f'<a href="{v["url2"]}" target="_blank" rel="noopener">Part 2</a></span>\n'
+                     f'              </li>')
+    else:
+        video_row = way_row("video", "Watch it free",
                 f'<em>{v["title"]}</em> &middot; {v["status"].lower()}' if not v["url"]
-                else f'<em>{v["title"]}</em> on YouTube', v["url"]),
+                else f'<em>{v["title"]}</em> on YouTube', v["url"])
+    rows = [
+        video_row,
         way_row("book", "Read the longer version",
                 b["status"].lower() if not b["url"] else "on Amazon", b["url"]),
         way_row("coloring", "Color it",
@@ -329,6 +385,10 @@ def tile(s, kind):
     empty = "" if (kind == "video" or d.get("cover")) else " empty"
     body = (f'<a class="button gold" href="{href}" target="_blank" rel="noopener">{cta}</a>'
             if href else f'<p class="p-status">{d["status"]}</p>')
+    if kind == "video" and d.get("url2"):
+        body = ('<div class="purchase-buttons">\n            '
+                f'<a class="button gold" href="{d["url"]}" target="_blank" rel="noopener">Watch Part 1</a>\n            '
+                f'<a class="button gold" href="{d["url2"]}" target="_blank" rel="noopener">Watch Part 2</a>\n          </div>')
     if kind == "coloring" and d.get("digital_url"):
         body = ('<div class="purchase-buttons">\n            ' + body +
                 f'\n            <a class="button etsy" href="{d["digital_url"]}" '
