@@ -13,7 +13,7 @@ PUBLISHED = True
 
 YOUTUBE = "https://www.youtube.com/@MidnightCrownStories"
 SOCIAL_CARD = "assets/social-card.jpg"   # 1200x630, built from the crown avatar
-BUILT = "2026-10-28"                    # sitemap lastmod; bump when content changes
+BUILT = "2026-11-04"                    # sitemap lastmod; bump when content changes
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -30,6 +30,22 @@ SHELVES = [
 # ---------------------------------------------------------------- the stories
 
 STORIES = [
+    {
+        "slug": "yuletide",
+        "name": "Yuletide",
+        "kicker": "Story six &middot; Medieval &middot; Christmas",
+        "hook": "He promised she could decorate his house. He forgot to mention the battlements.",
+        "blurb": "Noelle Winters has bread in the oven, a garland to finish, and no intention of leaving "
+                 "Christmas behind. When a winter storm brings her to Jarrod's castle, she arrives with ribbons, "
+                 "a schoolteacher's patience, and a few opinions about how a king might make himself useful.",
+        "art_alt": "A couple kiss in a snowy castle courtyard beside a doorway hung with Christmas wreaths",
+        "thumb_alt": "The Alpha King Brought a Human Home for Christmas thumbnail",
+        "video": {"title": "The Alpha King Brought a Human Home for Christmas", "url": "https://youtu.be/Kkp2Bj1lcsk", "status": "Live"},
+        "book": {"url": None, "status": "Planned", "cover": None},
+        "coloring": {"url": "https://www.amazon.com/dp/B0HQBXXNMH", "status": "Live", "cover": "christmas-promise-coloring.jpg",
+                     "digital_url": "https://www.etsy.com/listing/4609408401",
+                     "title": "The Alpha King&rsquo;s Christmas Promise"},
+    },
     {
         "slug": "masked-ball",
         "name": "The Masked Festival",
@@ -276,6 +292,7 @@ NEWSLETTER = f'''
         <h2>Join the newsletter</h2>
         <p class="offer">Be the first to know when a new story, coloring book, or novel goes live.</p>
         <ul class="offer-list">
+          <li><strong>A Christmas gift when you join:</strong> three coloring pages from The Alpha King&rsquo;s Christmas Promise, one of them in no book at all</li>
           <li>New stories the day they go live</li>
           <li>The books and coloring books behind the stories</li>
           <li>The occasional freebie</li>
@@ -322,7 +339,7 @@ SIGNUP_JS = '''
           var data = await res.json();
           if (data.success) {
             f.hidden = true;
-            status.textContent = 'Almost there. Check your inbox for a confirmation email and click the button inside.';
+            status.textContent = 'Almost there. Check your inbox for a confirmation email and click the button inside. Your Christmas pages arrive right after.';
           } else {
             status.textContent = 'That did not go through. Check the address and try again.';
           }
@@ -492,6 +509,31 @@ def build_privacy():
     h = head("Privacy | Alora C. Kane", "How Alora C. Kane handles newsletter email addresses.", "privacy.html")
     return h + PRIVACY + FOOTER
 
+
+GIFT = """
+    <section class="page-hero smoke">
+      <h1>Your Christmas gift</h1>
+      <p class="tagline">Thank you for joining. Here are your three pages to color, one of them in no book at all.</p>
+    </section>
+
+    <section class="stories smoke">
+      <div class="shelf-empty">
+        <p><img src="assets/gifts/christmas-gift-preview.jpg" alt="Three Christmas coloring pages" style="max-width:100%;height:auto;border-radius:6px"></p>
+        <div class="purchase-buttons">
+          <a class="button gold" href="assets/gifts/alora-christmas-gift.pdf" target="_blank" rel="noopener">Print it (PDF)</a>
+          <a class="button etsy" href="assets/gifts/alora-christmas-gift-tablet-pages.zip">Tablet pages</a>
+        </div>
+        <p class="shelf-empty-hint">Print on plain letter paper, or open the tablet pages in any coloring app. Then put the story on and color while you listen.</p>
+        <a class="button gold" href="https://youtu.be/Kkp2Bj1lcsk" target="_blank" rel="noopener">Listen on YouTube</a>
+      </div>
+    </section>
+"""
+
+def build_gift():
+    h = head("Your Christmas gift | Alora C. Kane", "A Christmas gift for newsletter readers.", "gift.html")
+    h = h.replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex">')
+    return h + GIFT + FOOTER
+
 def build_sitemap():
     rows = "".join(f"  <url><loc>{SITE}{'' if f == 'index.html' else f}</loc><lastmod>{BUILT}</lastmod></url>\n"
                    for f in [f for f, _, _ in SHELVES] + ["privacy.html"])
@@ -507,7 +549,7 @@ def main():
     root = os.path.dirname(os.path.abspath(__file__))
     out = {"index.html": build_home(), "404.html": build_404(),
            "sitemap.xml": build_sitemap(), "robots.txt": build_robots(),
-           "privacy.html": build_privacy()}
+           "privacy.html": build_privacy(), "gift.html": build_gift()}
     for filename, kind, _ in SHELVES[1:]:
         out[filename] = build_shelf(filename, kind)
     for name, text in out.items():

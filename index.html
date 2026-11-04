@@ -95,7 +95,33 @@
 
         <article class="story-card">
           <div class="story-art">
-            <img src="assets/stories/masked-ball-portrait.png" alt="A masked couple in a candlelit ballroom" width="1024" height="1536">
+            <img src="assets/stories/yuletide.jpg" alt="A couple kiss in a snowy castle courtyard beside a doorway hung with Christmas wreaths" width="760" height="428">
+          </div>
+          <div class="story-body">
+            <p class="story-kicker">Story six &middot; Medieval &middot; Christmas</p>
+            <h3>Yuletide</h3>
+            <p class="story-hook">He promised she could decorate his house. He forgot to mention the battlements.</p>
+            <p class="story-blurb">Noelle Winters has bread in the oven, a garland to finish, and no intention of leaving Christmas behind. When a winter storm brings her to Jarrod's castle, she arrives with ribbons, a schoolteacher's patience, and a few opinions about how a king might make himself useful.</p>
+            <ul class="ways">
+              <li class="way ready">
+                <svg class="way-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5a1 1 0 0 1 1.52-.85l13 7.5a1 1 0 0 1 0 1.7l-13 7.5A1 1 0 0 1 4 19.5z"/></svg>
+                <span><span class="way-label">Watch it free</span> <a href="https://youtu.be/Kkp2Bj1lcsk" target="_blank" rel="noopener"><em>The Alpha King Brought a Human Home for Christmas</em> on YouTube</a></span>
+              </li>
+              <li class="way pending">
+                <svg class="way-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.6 1.6c.4 3-1.3 4.3-2.8 5.7C8 8.9 6.4 10.5 6.4 13.6a5.9 5.9 0 0 0 11.8 0c0-2.3-1-3.9-2-5.2-.3 1-.9 1.7-1.7 2 .5-2.6-.6-5.6-1.9-8.8z"/><path d="M12 14c1.3 1 1.9 2 1.9 3a1.9 1.9 0 0 1-3.8 0c0-1 .6-2 1.9-3z" fill="#33203a"/></svg>
+                <span><span class="way-label">Read the longer version</span> <span class="way-note">planned</span></span>
+              </li>
+              <li class="way ready">
+                <svg class="way-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 2.4h5.6a1 1 0 0 1 1 1v3.1H8.2V3.4a1 1 0 0 1 1-1z"/><path d="M8.2 8.1h7.6v9.3l-3.3 4.4a.6.6 0 0 1-1 0L8.2 17.4z"/></svg>
+                <span><span class="way-label">Color it</span> <a href="https://www.amazon.com/dp/B0HQBXXNMH" target="_blank" rel="noopener">coloring book on Amazon</a> or <a href="https://www.etsy.com/listing/4609408401" target="_blank" rel="noopener">Digital version on Etsy</a></span>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="story-card">
+          <div class="story-art">
+            <img src="assets/stories/masked-ball-portrait.png" alt="A masked couple in a candlelit ballroom" width="1024" height="1536" loading="lazy">
           </div>
           <div class="story-body">
             <p class="story-kicker">Story one &middot; Medieval</p>
@@ -231,6 +257,7 @@
         <h2>Join the newsletter</h2>
         <p class="offer">Be the first to know when a new story, coloring book, or novel goes live.</p>
         <ul class="offer-list">
+          <li><strong>A Christmas gift when you join:</strong> three coloring pages from The Alpha King&rsquo;s Christmas Promise, one of them in no book at all</li>
           <li>New stories the day they go live</li>
           <li>The books and coloring books behind the stories</li>
           <li>The occasional freebie</li>
@@ -284,7 +311,7 @@
           var data = await res.json();
           if (data.success) {
             f.hidden = true;
-            status.textContent = 'Almost there. Check your inbox for a confirmation email and click the button inside.';
+            status.textContent = 'Almost there. Check your inbox for a confirmation email and click the button inside. Your Christmas pages arrive right after.';
           } else {
             status.textContent = 'That did not go through. Check the address and try again.';
           }
