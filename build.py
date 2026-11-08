@@ -41,7 +41,10 @@ STORIES = [
         "art_alt": "A couple kiss in a snowy castle courtyard beside a doorway hung with Christmas wreaths",
         "thumb_alt": "The Alpha King Brought a Human Home for Christmas thumbnail",
         "video": {"title": "The Alpha King Brought a Human Home for Christmas", "url": "https://youtu.be/Kkp2Bj1lcsk", "status": "Live"},
-        "book": {"url": None, "status": "Planned", "cover": None},
+        "book": {"url": "index.html#newsletter", "status": "Free", "cover": "christmas-promise-ebook.jpg",
+                 "title": "The Alpha King&rsquo;s Christmas Promise",
+                 "note": "free for now, when you join the newsletter", "cta": "Free for now: join the newsletter",
+                 "line": "The ebook &middot; free for now", "same_tab": True},
         "coloring": {"url": "https://www.amazon.com/dp/B0HQBXXNMH", "status": "Live", "cover": "christmas-promise-coloring.jpg",
                      "digital_url": "https://www.etsy.com/listing/4609408401",
                      "title": "The Alpha King&rsquo;s Christmas Promise"},
@@ -227,12 +230,13 @@ def img_size(rel):
     with Image.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), rel)) as im:
         return im.size
 
-def way_row(kind, label, note, url, digital_url=None):
+def way_row(kind, label, note, url, digital_url=None, same_tab=False):
     icon = ICONS[kind]
     if not url and digital_url:
         url, note, digital_url = digital_url, "Digital version on Etsy", None
     if url:
-        inner = f'<span class="way-label">{label}</span> <a href="{url}" target="_blank" rel="noopener">{note}</a>'
+        tgt = '' if same_tab else ' target="_blank" rel="noopener"'
+        inner = f'<span class="way-label">{label}</span> <a href="{url}"{tgt}>{note}</a>'
         if digital_url:
             inner += f' or <a href="{digital_url}" target="_blank" rel="noopener">Digital version on Etsy</a>'
         cls = "way ready"
@@ -264,8 +268,9 @@ def story_card(s):
                 else f'<em>{v["title"]}</em> on YouTube', v["url"])
     rows = [
         video_row,
-        way_row("book", "Read the longer version",
-                b["status"].lower() if not b["url"] else "on Amazon", b["url"]),
+        way_row("book", "Read the book",
+                b["status"].lower() if not b["url"] else b.get("note", "on Amazon"), b["url"],
+                same_tab=b.get("same_tab", False)),
         way_row("coloring", "Color it",
                 c["status"].lower() if not c["url"] else "coloring book on Amazon", c["url"], c.get("digital_url")),
     ]
@@ -290,12 +295,11 @@ NEWSLETTER = f'''
     <section id="newsletter" class="newsletter smoke">
       <div class="newsletter-panel">
         <h2>Join the newsletter</h2>
-        <p class="offer">Be the first to know when a new story, coloring book, or novel goes live.</p>
+        <p class="offer">A newsletter from time to time, never a flood: news of new stories and coloring books, and free things just for readers on the list.</p>
         <ul class="offer-list">
-          <li><strong>A Christmas gift when you join:</strong> three coloring pages from The Alpha King&rsquo;s Christmas Promise, one of them in no book at all</li>
-          <li>New stories the day they go live</li>
+          <li><strong>A free Christmas ebook when you join:</strong> The Alpha King&rsquo;s Christmas Promise, the full romance, plus five coloring pages to print or color on your tablet</li>
           <li>The books and coloring books behind the stories</li>
-          <li>The occasional freebie</li>
+          <li>Freebies just for readers on the list</li>
         </ul>
 {STUB}
         <form class="signup" id="signup-form">
@@ -339,7 +343,7 @@ SIGNUP_JS = '''
           var data = await res.json();
           if (data.success) {
             f.hidden = true;
-            status.textContent = 'Almost there. Check your inbox for a confirmation email and click the button inside. Your Christmas pages arrive right after.';
+            status.textContent = 'Almost there. Check your inbox for a confirmation email and click the button inside. Your free Christmas ebook arrives right after.';
           } else {
             status.textContent = 'That did not go through. Check the address and try again.';
           }
@@ -353,7 +357,7 @@ SIGNUP_JS = '''
 
 HOME_TITLE = "Alora C. Kane | Alpha King and Werewolf Romance"
 HOME_DESC = ("Alpha king and werewolf romance by Alora C. Kane. Free visual audiobooks on YouTube. "
-             "Coloring books and the longer, spicier novels on Amazon.")
+             "Coloring books and the spicier novels on Amazon.")
 
 def build_home():
     ld = [
@@ -396,11 +400,12 @@ def tile(s, kind):
         img = (f'<img src="assets/covers/{cover}" alt="Cover of {d.get("title", s["name"])}">' if cover
                else f'<span>{s["name"]}</span>')
         shape = "tall"
-        line = "Coloring book" if kind == "coloring" else "The longer version"
+        line = "Coloring book" if kind == "coloring" else d.get("line", "The book")
         name = d.get("title", s["name"])
-        cta, href = "Buy on Amazon", d["url"]
+        cta, href = d.get("cta", "Buy on Amazon"), d["url"]
     empty = "" if (kind == "video" or d.get("cover")) else " empty"
-    body = (f'<a class="button gold" href="{href}" target="_blank" rel="noopener">{cta}</a>'
+    tgt = '' if d.get("same_tab") else ' target="_blank" rel="noopener"'
+    body = (f'<a class="button gold" href="{href}"{tgt}>{cta}</a>'
             if href else f'<p class="p-status">{d["status"]}</p>')
     if kind == "video" and d.get("url2"):
         body = ('<div class="purchase-buttons">\n            '
@@ -429,10 +434,10 @@ SHELF_COPY = {
               "Printable alpha king and werewolf romance coloring books by Alora C. Kane, drawn "
               "from the Midnight Crown stories. Paperbacks on Amazon and digital editions on Etsy."),
  "book": ("Books",
-          "The longer versions, where rather more happens.",
+          "The books of the stories, where rather more happens.",
           "The first book is being written now.",
-          "Alpha king and werewolf romance novels by Alora C. Kane on Amazon: the longer, "
-          "spicier versions of the free YouTube stories."),
+          "Alpha king and werewolf romance novels by Alora C. Kane on Amazon: the spicier "
+          "versions of the free YouTube stories."),
 }
 
 def build_shelf(filename, kind):
@@ -512,25 +517,28 @@ def build_privacy():
 
 GIFT = """
     <section class="page-hero smoke">
-      <h1>Your Christmas gift</h1>
-      <p class="tagline">Thank you for joining. Here are your three pages to color, one of them in no book at all.</p>
+      <h1>Your free Christmas ebook</h1>
+      <p class="tagline">Thank you for joining. Here is The Alpha King&rsquo;s Christmas Promise, the full story, plus five pages to color.</p>
     </section>
 
     <section class="stories smoke">
       <div class="shelf-empty">
-        <p><img src="assets/gifts/christmas-gift-preview.jpg" alt="Three Christmas coloring pages" style="max-width:100%;height:auto;border-radius:6px"></p>
+        <p><img src="assets/covers/christmas-promise-ebook.jpg" alt="Cover of The Alpha King&rsquo;s Christmas Promise" style="max-width:320px;width:100%;height:auto;border-radius:6px"></p>
         <div class="purchase-buttons">
-          <a class="button gold" href="assets/gifts/alora-christmas-gift.pdf" target="_blank" rel="noopener">Print it (PDF)</a>
-          <a class="button etsy" href="assets/gifts/alora-christmas-gift-tablet-pages.zip">Tablet pages</a>
+          <a class="button gold" href="assets/gifts/the-alpha-kings-christmas-promise.epub" download>Ebook (EPUB)</a>
+          <a class="button gold" href="assets/gifts/the-alpha-kings-christmas-promise.pdf" target="_blank" rel="noopener">PDF with coloring pages</a>
         </div>
-        <p class="shelf-empty-hint">Print on plain letter paper, or open the tablet pages in any coloring app. Then put the story on and color while you listen.</p>
-        <a class="button gold" href="https://youtu.be/Kkp2Bj1lcsk" target="_blank" rel="noopener">Listen on YouTube</a>
+        <p class="shelf-empty-hint">The EPUB opens in Apple Books, Google Play Books and most reading apps. On Kindle, send it with Amazon&rsquo;s Send to Kindle. The PDF has the five coloring pages at the end, full size and ready to print on plain letter paper.</p>
+        <div class="purchase-buttons">
+          <a class="button etsy" href="assets/gifts/alora-christmas-gift-tablet-pages.zip">Christmas pages for tablets</a>
+          <a class="button etsy" href="https://youtu.be/Kkp2Bj1lcsk" target="_blank" rel="noopener">Listen on YouTube</a>
+        </div>
       </div>
     </section>
 """
 
 def build_gift():
-    h = head("Your Christmas gift | Alora C. Kane", "A Christmas gift for newsletter readers.", "gift.html")
+    h = head("Your free Christmas ebook | Alora C. Kane", "A free Christmas ebook for newsletter readers.", "gift.html")
     h = h.replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex">')
     return h + GIFT + FOOTER
 
