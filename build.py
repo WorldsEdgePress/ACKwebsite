@@ -210,6 +210,8 @@ FOOTER = '''
     <p class="copyright">&copy; 2026 Alora C. Kane. All rights reserved.</p>
   </footer>
 
+  <!-- GoatCounter visitor counter: no cookies, no personal data. Stats at alorakanebooks.goatcounter.com -->
+  <script data-goatcounter="https://alorakanebooks.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
 '''
@@ -498,14 +500,16 @@ PRIVACY = """
     <section class="about">
       <div class="about-inner">
         <h2>What I collect</h2>
-        <p>If you join the newsletter, I collect your email address. That is all. This site has no ads, no tracking pixels, and no analytics cookies.</p>
+        <p>If you join the newsletter, I collect your email address. That is all. This site has no ads, no tracking pixels, and no cookies.</p>
+        <h2>Counting visits</h2>
+        <p>I count how many people visit each page with GoatCounter, a small privacy-friendly counter. It uses no cookies and collects nothing that identifies you. I only see totals, like how many people looked at a story page this week.</p>
         <h2>How I use it</h2>
         <p>I use your email address only to send you story news, new releases, and the occasional freebie from me. The newsletter is sent through MailerLite, a trusted email service that stores the list securely on my behalf.</p>
         <h2>What I never do</h2>
         <p>I never sell, rent, or share your email address with anyone else.</p>
         <h2>Leaving</h2>
         <p>Every email has an unsubscribe link at the bottom. One click and you are off the list. You can also write to <a href="mailto:alora@alorakanebooks.com">alora@alorakanebooks.com</a> and ask me to delete your address, and I will.</p>
-        <p class="fine-print">Last updated 30 September 2026.</p>
+        <p class="fine-print">Last updated 10 November 2026.</p>
       </div>
     </section>
 """
