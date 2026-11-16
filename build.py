@@ -13,7 +13,7 @@ PUBLISHED = True
 
 YOUTUBE = "https://www.youtube.com/@MidnightCrownStories"
 SOCIAL_CARD = "assets/social-card.jpg"   # 1200x630, built from the crown avatar
-BUILT = "2026-11-04"                    # sitemap lastmod; bump when content changes
+BUILT = "2026-11-16"                    # sitemap lastmod; bump when content changes
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -30,6 +30,20 @@ SHELVES = [
 # ---------------------------------------------------------------- the stories
 
 STORIES = [
+    {
+        "slug": "new-years",
+        "name": "The New Year&rsquo;s Date",
+        "kicker": "Story seven &middot; Modern &middot; New Year&rsquo;s",
+        "hook": "She hired a fake date for the New Year's ball. The man who sat down was better than she ordered.",
+        "blurb": "Omega artist Sasha Pernell needs a date for the Alpha King's New Year's ball: tall, dark, "
+                 "handsome, able to dance, and ready to keep her stepsisters at bay. She hands him her rules. "
+                 "He looks delighted. She has no idea she is interviewing the Alpha King himself.",
+        "art_alt": "A dark haired woman in a green satin gown and a man in a tuxedo in a candlelit ballroom",
+        "thumb_alt": "She Hired a Fake Date for the New Year's Ball thumbnail",
+        "video": {"title": "She Hired a Fake Date for the New Year&rsquo;s Ball", "url": "https://youtu.be/-vIFut9ics8", "status": "Live"},
+        "book": {"url": None, "status": "Planned", "cover": None},
+        "coloring": {"url": None, "status": "Planned", "cover": None},
+    },
     {
         "slug": "yuletide",
         "name": "Yuletide",
